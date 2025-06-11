@@ -8,14 +8,14 @@ import Login from "./pages/login";
 export const backendUrl = 'http://localhost:4000'
 
 const App = () => {
-  const [token,setToken] = useState('')
+  const [token,setToken] = useState(localStorage.getItem('token') ? localStorage.getItem('token') : '')
   return (
     <div>
       <ToastContainer />
       <Navbar setToken={setToken}/>
       <Routes>
         <Route path="/" element={<Login setToken={setToken}/>} />
-        <Route path="/Entry" element={<Entry />} />
+        <Route path="/Entry" element={<Entry token={token}/>} />
       </Routes>
     </div>
   );
