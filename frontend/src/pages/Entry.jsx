@@ -14,8 +14,29 @@ const Entry = ({ token }) => {
     try {
       const response = await axios.post(`${backendUrl}/api/entry/add`,{description,credit,debit}, {headers:{token}})
 
-      console.log(response.data);
-      
+      // console.log(response.data);
+      if(response.data.success){
+        getEntries()
+        toast.success(response.data.msg)
+        setDescription('')
+        setCredit('')
+        setDebit('')
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  }
+  
+  const removeEntry = async (id) => {
+    try {
+      const response = await axios.post(`${backendUrl}/api/entry/delete`, {_id:id}, {headers:{token}})
+
+      // console.log(response.data.msg);
+      if(response.data.success){
+        getEntries()
+        toast.success(response.data.msg)
+      }
     } catch (error) {
       console.log(error);
       toast.error(error.message);
@@ -26,7 +47,7 @@ const Entry = ({ token }) => {
     try {
       const response = await axios.post(`${backendUrl}/api/entry/get`, {}, {headers: {token}})
 
-      // console.log(response.data.entry);
+      console.log(response.data);
       setGetAllEntries(response.data.entry)
       
     } catch (error) {
@@ -61,13 +82,13 @@ const Entry = ({ token }) => {
           </thead>
           <tbody>
             {getAllEntries.map((item, index) => (
-              <tr>
-              <td className="border p-2">12</td>
-              <td className="border p-2">hie</td>
-              <td className="border p-2">12</td>
-              <td className="border p-2">2</td>
-              <td className="border p-2">X</td>
-            </tr>
+             <tr key={index}>
+               <td className="border p-2">{new Date(item.date).toLocaleDateString()}</td>
+               <td className="border p-2 capitalize">{item.description}</td>
+               <td className="border p-2">{item.credit.toFixed(2)}</td>
+               <td className="border p-2">{item.debit.toFixed(2)}</td>
+               <td onClick={()=>removeEntry(item._id)} className="border p-2 text-center cursor-pointer">X</td>
+             </tr>
             ))}
           </tbody>
         </table>

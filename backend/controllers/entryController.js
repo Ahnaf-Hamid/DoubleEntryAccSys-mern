@@ -25,7 +25,7 @@ const deleteEntry = async (req, res) => {
       return res.json({ success: false, msg: "entry not found" });
     }
 
-    res.json({ success: true, msg: "entry deleted" });
+    res.json({ success: true, msg: "Entry Deleted" });
   } catch (error) {
     console.log(error);
     res.json({ success: false, msg: error.message });
